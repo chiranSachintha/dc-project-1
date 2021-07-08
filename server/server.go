@@ -12,7 +12,7 @@ func main() {
 
 	// create a `*GetStore` object
 	store := common.GetStore()
-	// store.Read()
+	store.Read()
 
 	// register `store` object with `rpc.DefaultServer`
 	rpc.Register(store)

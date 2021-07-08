@@ -1,7 +1,10 @@
 package common
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"os"
 )
 
 // Vegetable struct represents a vegetable.
@@ -17,8 +20,14 @@ func (veg Vegetable) GetPrice() float32 {
 }
 
 var (
-	store *VegStore
+	vegStore *VegStore
 )
+
+func init() {
+	vegStore = &VegStore{
+		database: make(map[string]Vegetable),
+	}
+}
 
 type VegStore struct {
 	database map[string]Vegetable
@@ -75,7 +84,7 @@ func (c *VegStore) Update(vegetable Vegetable, reply *Vegetable) error {
 	}
 
 	c.database[vegetable.Name] = vegetable
-	// c.Write()
+	c.Write()
 	*reply = vegetable
 
 	return nil
@@ -91,7 +100,7 @@ func (c *VegStore) Delete(name string, reply *string) error {
 		return fmt.Errorf("vegetable with name '%s' does not exist", name)
 	} else {
 		delete(c.database, name)
-		// c.Write()
+		c.Write()
 		*reply = "deleted successfully."
 	}
 
@@ -99,19 +108,17 @@ func (c *VegStore) Delete(name string, reply *string) error {
 }
 
 func GetStore() *VegStore {
-	return &VegStore{
-		database: make(map[string]Vegetable),
-	}
+	return vegStore
 }
 
 // to read from the file
-// func (c *VegStore) Read() {
-// 	file, _ := ioutil.ReadFile("veg-db.json")
-// 	json.Unmarshal(file, &vegStore.database)
-// }
+func (c *VegStore) Read() {
+	file, _ := ioutil.ReadFile("veg-db.json")
+	json.Unmarshal(file, &vegStore.database)
+}
 
 // // write to the file
-// func (c *VegStore) Write() {
-// 	jsonString, _ := json.Marshal(vegStore.database)
-// 	ioutil.WriteFile("veg-db.json", jsonString, os.ModePerm)
-// }
+func (c *VegStore) Write() {
+	jsonString, _ := json.Marshal(vegStore.database)
+	ioutil.WriteFile("veg-db.json", jsonString, os.ModePerm)
+}

@@ -33,9 +33,9 @@ func main() {
 	// add vegetable by name 'Carrot'
 	if err := client.Call("VegStore.Add", common.Vegetable{
 		ID:     1,
-		Name:   "Carrot",
-		Price:  32,
-		Amount: 23,
+		Name:   "Tomatoes",
+		Price:  85,
+		Amount: 0.5,
 	}, &veg); err != nil {
 		fmt.Println("Error:2 VegStore.Add()", err)
 	} else {
