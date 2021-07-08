@@ -22,7 +22,7 @@ func (c *VegStore) Add(vegetable Vegetable) error {
 
 	// check if vegetable already exists in the database
 	if _, ok := c.database[vegetable.Name]; ok {
-		return fmt.Errorf("vegetable with name '%d' already exists", vegetable.Name)
+		return fmt.Errorf("vegetable with name '%s' already exists", vegetable.Name)
 	}
 
 	// add vegetable `p` in the database
@@ -40,7 +40,7 @@ func (c *VegStore) Get(name string, reply *Vegetable) error {
 
 	// check if vegetable exists in the database
 	if !ok {
-		return fmt.Errorf("vegetable with name '%d' does not exist", id)
+		return fmt.Errorf("vegetable with name '%s' does not exist", name)
 	}
 
 	*reply = result
